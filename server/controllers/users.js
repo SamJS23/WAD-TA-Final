@@ -131,7 +131,7 @@ export const signIn = async (req, res) => {
 
         res.cookie('refreshtoken', refresh_token, {
             httpOnly: true,
-            path: '/api/user/refresh_token',
+            path: '/',
             maxAge: expiry,
             expires: new Date(Date.now() + expiry)
         })
@@ -157,6 +157,19 @@ export const userInfor = async (req, res) => {
         const userInfor = await Users.findById(userId).select("-password")
 
         res.json(userInfor)
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
+// user logout
+export const logout = async (req, res) => {
+    try {
+        // Clear the refresh token cookie
+        res.clearCookie('refreshtoken', {
+            path: '/'
+        })
+
+        res.json({ message: "Logged out successfully!" })
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }

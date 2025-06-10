@@ -1,5 +1,5 @@
 import express from 'express';
-import { activateEmail, signIn, signUp, userInfor } from '../controllers/users.js';
+import { activateEmail, signIn, signUp, userInfor, logout } from '../controllers/users.js';
 import { auth } from '../middleware/auth.js';
 
 const router = express.Router()
@@ -75,7 +75,6 @@ router.get("/user-infor", auth, userInfor)
  */
 router.post("/signup", signUp)
 
-
 /**
  * @openapi
  * /activation:
@@ -134,5 +133,36 @@ router.post("/activation", activateEmail)
  *         description: Internal server error
  */
 router.post("/signin", signIn)
+/**
+ * @openapi
+ * /logout:
+ *   post:
+ *     tags:
+ *       - User
+ *     summary: Logout user
+ *     description: Logs out the user by clearing the refresh token cookie
+ *     responses:
+ *       '200':
+ *         description: Logged out successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Logged out successfully!"
+ *       '500':
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Error message"
+ */
+router.post("/logout", logout)
 
 export default router

@@ -42,9 +42,10 @@ const LoginPage = () => {
     }
 
     if (isSuccess && user) {
-      toast.success(user.message);
+      toast.success(message || "Login successful!");
+      dispatch(reset());
     }
-  }, [user, isSuccess, isError, message]);
+  }, [user, isSuccess, isError, message, dispatch]);
 
   if (isLoading) {
     return (
@@ -71,12 +72,13 @@ const LoginPage = () => {
             >
               <input
                 type="email"
-                id="name"
+                id="email"
                 name="email"
                 value={email}
                 onChange={onChange}
                 placeholder="Email"
                 className="border p-2 rounded-md"
+                required
               />
               <input
                 type="password"
@@ -86,12 +88,14 @@ const LoginPage = () => {
                 onChange={onChange}
                 placeholder="Password"
                 className="border p-2 rounded-md"
+                required
               />
               <button
                 type="submit"
-                className="bg-green-600 text-white p-2 rounded-md hover:bg-green-700 transition"
+                disabled={isLoading}
+                className="bg-green-600 text-white p-2 rounded-md hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Login
+                {isLoading ? "Logging in..." : "Login"}
               </button>
             </form>
           </div>

@@ -43,4 +43,4 @@ const userSchema = mongoose.Schema({
 
 userSchema.index({ "personal_id": 1, "email": 1 })
 
-export default mongoose.model("Users", userSchema)
+export default mongoose.model('Users', userSchema)

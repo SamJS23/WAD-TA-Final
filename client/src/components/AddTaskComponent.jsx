@@ -1,12 +1,48 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 const AddTaskComponent = () => {
   const [taskTitle, setTaskTitle] = useState("");
   const [taskDesc, setTaskDesc] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleAddTask = async (e) => {};
+  const API_BASE_URL = "https://e2425-wads-l4ccg5-server-setiadi.csbihub.id/service/todo"; 
+
+  const handleAddTask = async (e) => {
+    e.preventDefault();
+
+    if (!taskTitle.trim() || !taskDesc.trim()) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      
+      const response = await axios.post(`${API_BASE_URL}/add_todo`, {
+        todo_name: taskTitle,
+        todo_desc: taskDesc,
+        todo_status: "active",
+        todo_image: "https://api.dicebear.com/9.x/icons/svg?seed=" + taskTitle
+      });
+      
+      toast.success("Task added successfully!");
+      
+      // Clear form
+      setTaskTitle("");
+      setTaskDesc("");
+      
+      
+      window.location.reload(); 
+      
+    } catch (error) {
+      toast.error("Failed to add task");
+      console.error("Error adding task:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
